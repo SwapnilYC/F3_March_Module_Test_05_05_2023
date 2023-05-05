@@ -78,31 +78,28 @@ fetch(`https://ipinfo.io/${ipAddress}/geo?token=2f12b9591109d8`)
       .then((postalDataArray) => {
         // Storing all post offices present in that pin code in an array
         let postalData = postalDataArray[0];
-        // console.log(postalData);
         messageEl.textContent = postalData.Message;
         let postOfficesInPincodeArray = postalData.PostOffice;
-
-        // display postoffices present in that pincode
+        // display post offices present in that pincode
         postOfficesInPincodeArray.forEach(postOffice => {
           displayPostOffices(postOffice.Name, postOffice.BranchType, postOffice.DeliveryStatus, postOffice.District, postOffice.Division)
         });
-
+        searchBoxInputEl.classList.remove('hidden');
         //----------------------------------------------------
         // Adding event listener on search bar
-        searchBoxInputEl.addEventListener('change', (e) => {
+        searchBoxInputEl.addEventListener('input', (e) => {
           e.preventDefault();
           // storing all postal office card elements in an array
           let postOfficeArray = document.querySelectorAll('.details-tiles');
-          // Adding hidden class to all elements
-          postOfficeArray.forEach((postOffice) => {
-            postOffice.classList.add('hidden');
-          })
-          // storing search value
-          let searchValue = searchBoxInputEl.value.toLowerCase();
+          let searchValue = searchBoxInputEl.value.toLowerCase().trim();
           // searching for that specific element
           postOfficeArray.forEach((postOfficeElement) => {
-            // console.log(postOfficeElement);
-            if (postOfficeElement.classList.contains(searchValue) || postOfficeElement.classList.contains(searchValue)) {
+            let name = postOfficeElement.querySelector('#poName').textContent.toLowerCase();
+            let branchType = postOfficeElement.querySelector('#poBranch').textContent.toLowerCase();
+            if (searchValue === '') postOfficeElement.classList.remove('hidden');
+            if (!name.includes(searchValue) && !branchType.includes(searchValue)) {
+              postOfficeElement.classList.add('hidden');
+            } else {
               postOfficeElement.classList.remove('hidden');
             }
           })
@@ -116,6 +113,3 @@ fetch(`https://ipinfo.io/${ipAddress}/geo?token=2f12b9591109d8`)
   .catch((error) => {
     console.error(error.message);
   })
-
-
-  //https://api.postalpincode.in/pincode/411001
