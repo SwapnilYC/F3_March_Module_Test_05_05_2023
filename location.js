@@ -1,7 +1,5 @@
 // Retrieving ip address from local storage
 let ipAddress = window.localStorage.getItem('ip');
-// let postOfficeArray = [];
-// let postOfficeBranchTypeArray = [];
 
 //------------------------------------------------------------------------------------------------------------------------------------
 const ipEl = document.getElementById('ip');
